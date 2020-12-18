@@ -1,0 +1,5 @@
+include ':library_res'
+include ':library_base'
+include ':mvvmhabit'
+include ':app'
+rootProject.name = "StoreAPP"
