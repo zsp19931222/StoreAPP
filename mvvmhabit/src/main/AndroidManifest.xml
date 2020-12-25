@@ -1,0 +1,27 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    package="me.andy.mvvmhabit">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application android:networkSecurityConfig="@xml/network_security_config"
+        tools:targetApi="n">
+        <activity
+            android:name="me.andy.mvvmhabit.base.ContainerActivity"
+            android:configChanges="orientation|keyboardHidden"></activity>
+        <activity
+            android:name="me.andy.mvvmhabit.crash.DefaultErrorActivity"
+            android:process=":error_activity" />
+
+        <provider
+            android:name="me.andy.mvvmhabit.crash.CaocInitProvider"
+            android:authorities="${applicationId}.customactivityoncrashinitprovider"
+            android:exported="false"
+            android:initOrder="101" />
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@android:style/Theme.Translucent" />
+    </application>
+
+</manifest>

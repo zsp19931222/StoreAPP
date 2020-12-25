@@ -9,7 +9,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 
-import me.goldze.mvvmhabit.base.BaseApplication;
+import me.andy.mvvmhabit.base.BaseApplication;
 
 
 /**

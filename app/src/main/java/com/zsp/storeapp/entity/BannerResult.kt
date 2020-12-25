@@ -1,11 +1,12 @@
 package com.zsp.storeapp.entity
 
 data class BannerResult(
-    val bannerId: Int,
-    val bannerPath: String
+    val id: Int,
+    val path: String,
+    val href: String
 
 ) {
     override fun toString(): String {
-        return "BannerResult(bannerId=$bannerId, bannerPath='$bannerPath')"
+        return "BannerResult(id=$id, path='$path', href='$href')"
     }
 }

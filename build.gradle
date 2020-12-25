@@ -26,3 +26,112 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+//Gradle统一配置版本号
+ext {
+    //第三方配置
+    dependencies = [
+            //rxjava
+            "rxjava"                               : "io.reactivex.rxjava2:rxjava:2.2.10",
+            "rxandroid"                            : "io.reactivex.rxjava2:rxandroid:2.1.1",
+            //rx系列与View生命周期同步
+            "rxlifecycle"                          : "com.trello.rxlifecycle2:rxlifecycle:2.2.2",
+            "rxlifecycle-components"               : "com.trello.rxlifecycle2:rxlifecycle-components:2.2.2",
+            //rxbinding
+            "rxbinding"                            : "com.jakewharton.rxbinding2:rxbinding:2.1.1",
+            //rx 6.0权限请求
+            "rxpermissions"                        : "com.github.tbruyelle:rxpermissions:0.10.2",
+            //network
+            "okhttp"                               : "com.squareup.okhttp3:okhttp:4.4.1",
+            "logging-interceptor"                  : "com.squareup.okhttp3:logging-interceptor:3.9.1",
+            //json解析
+            "gson"                                 : "com.google.code.gson:gson:2.8.5",
+            //recyclerview的databinding套装
+            "bindingcollectionadapter"             : "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:2.2.0",
+            "bindingcollectionadapter-recyclerview": "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:2.2.0",
+            //Google AAC
+            "lifecycle-extensions"                 : 'androidx.lifecycle:lifecycle-extensions:2.0.0',
+            "lifecycle-compiler"                   : 'androidx.lifecycle:lifecycle-compiler:2.0.0',
+            //toast
+            "toast"                                : "com.github.GrenderG:Toasty:1.4.2",
+            //自适应布局
+            "autolayout"                           : "me.jessyan:autosize:1.1.2",
+            //消息总线
+            "eventBus"                             : "org.greenrobot:eventbus:3.0.0",
+            //dex分包
+            "multidex"                             : 'androidx.multidex:multidex:2.0.0',
+            //ARouter路由
+            "arouter"                              : "com.alibaba:arouter-api:1.5.0",
+            "arouter-compiler"                     : "com.alibaba:arouter-compiler:1.2.2",
+            //常用工具类
+            "utilcode"                             : "com.blankj:utilcode:1.11.1",
+            //图片选择器框架
+            "PictureSelector"                      : "com.github.LuckSiege.PictureSelector:picture_library:v2.5.2",
+            //android Theme库
+            "appcompat"                            : "androidx.appcompat:appcompat:1.2.0-alpha02",
+            //激光推送
+            "jpush"                                : "cn.jiguang.sdk:jpush:3.6.0",
+            "jcore"                                : "cn.jiguang.sdk:jcore:2.3.4",
+            // thinker配置
+            "crashreportUpgrade"                   : 'com.tencent.bugly:crashreport_upgrade:latest.release',
+            "tinkerAndroid"                        : 'com.tencent.tinker:tinker-android-lib:1.9.14.3',
+            "nativecrashreport"                    : 'com.tencent.bugly:nativecrashreport:latest.release',
+            //banner
+            "banner"                               : 'com.bigkoo:convenientbanner:2.1.5',
+            //万能adapter
+            "adapter"                              : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30',
+            //二维码
+            "zxing"                                : 'com.github.yuzhiqiang1993:zxing:2.2.5',
+            //cardview
+            "cardview"                             : 'androidx.cardview:cardview:1.0.0',
+            //design
+            "design"                               : 'com.android.support:design:28.0.0',
+            //骨架屏
+            "skeleton"                             : 'com.github.sharish:ShimmerRecyclerView:v1.3',
+            //popupwindow
+            "BasePopup"                            : 'com.github.razerdp:BasePopup:2.2.3',
+            //wheelview
+            "wheelview"                            : 'com.contrarywind:wheelview:4.0.9',
+            //刷新
+            "SmartRefreshLayout"                   : 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-20',
+            "SmartRefreshHeader"                   : 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-20',
+            //material-dialogs
+            "material-dialogs-core"                : "com.afollestad.material-dialogs:core:0.9.4.5",
+            "material-dialogs-commons"             : "com.afollestad.material-dialogs:commons:0.9.4.5",
+            //友盟
+            "umsdkCommon"                          : "com.umeng.umsdk:common:2.0.0",
+            //友盟分享
+            "shareCore"                            : "com.umeng.umsdk:share-core:7.0.2",
+            "shareQQ"                              : "com.umeng.umsdk:share-qq:7.0.2",
+            "shareWeChat"                          : "com.umeng.umsdk:share-wx:7.0.2",
+            "shareSina"                            : "com.umeng.umsdk:share-sina:7.0.2",
+            //分享面板
+            "shareWidget"                          : "com.umeng.umsdk:share-board:7.0.2",
+            //DB文件查看
+            "stetho"                               : "com.facebook.stetho:stetho:1.4.2",
+            //数据库框架
+            "LitePal"                              : "org.litepal.android:core:2.0.0",
+            //文件下载
+            "okgo"                                 : "com.lzy.net:okgo:3.0.4",
+            "okserver"                             : "com.lzy.net:okserver:2.0.2",
+            //图片浏览
+            "photoview"                            : "com.bm.photoview:library:1.4.1",
+            //消息角标
+            "ShortcutBadger"                       : "me.leolin:ShortcutBadger:1.1.22@aar",
+            //X5内核
+            "x5"                                   : "com.tencent.tbs.tbssdk:sdk:43939",
+            //glide
+            "glide"                                : "com.github.bumptech.glide:glide:4.9.0",
+            //推送各个平台插件此版本插件仅支持JPushSDK3.4.0
+            "xiaomi"                               : "cn.jiguang.sdk.plugin:xiaomi:3.4.0",
+            "huawei"                               : "cn.jiguang.sdk.plugin:huawei:3.4.0",
+            "meizu"                                : "cn.jiguang.sdk.plugin:meizu:3.4.0",
+            "oppo"                                 : "cn.jiguang.sdk.plugin:oppo:3.4.0",
+            "vivo"                                 : "cn.jiguang.sdk.plugin:vivo:3.4.0",
+            //拼音处理
+            "tinypinyin"                           : "com.github.promeg:tinypinyin:1.0.0",
+            //统计集成
+            "mta"                                  : "com.qq.mta:mta:3.4.7-Release",  //MTA主包
+            "mid"                                  : "com.tencent.mid:mid:4.06-Release", //MID基础包
+    ]
+}

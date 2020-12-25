@@ -134,31 +134,6 @@
         <attr format="reference" name="starFill"/>
     </declare-styleable>
 
-    <declare-styleable name="NumberButton">
-        <attr name="editable" format="boolean"/>
-        <attr name="buttonWidth" format="dimension" />
-        <attr name="textWidth" format="dimension" />
-        <attr name="textSize" format="dimension"/>
-        <attr name="textColor" format="color"/>
-    </declare-styleable>
-
-    <declare-styleable name="ImageView">
-        <!--  load bitmap from uri(string type) -->
-        <attr name="url" />
-        <!--width for ResizeOptions (use Fresco to load bitmap). -->
-        <attr name="request_width" format="integer" />
-        <!--height for ResizeOptions (use Fresco to load bitmap). -->
-        <attr name="request_height" format="integer" />
-        <attr name="placeholderRes" format="reference|color" />
-        <!--  require BindingCommand<Bitmap> See {@link @link com.kelin.mvvmlight.command.BindingCommand} -->
-        <attr name="onSuccessCommand" format="reference" />
-        <!--require BindingCommand<CloseableReference<CloseableImage>> See {@link com.kelin.mvvmlight.command.BindingCommand} -->
-        <attr name="onFailureCommand" format="reference" />
-        <attr name="radius" format="integer" />
-        <attr name="imageTint" format="color" />
-
-    </declare-styleable>
-
 
     <!--线样式-->
     <style name="lineStyle">

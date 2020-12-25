@@ -13,7 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.zsp.storeapp.R;
 
-import me.goldze.mvvmhabit.utils.KLog;
+import me.andy.mvvmhabit.util.ZLog;
 
 
 /**
@@ -75,7 +75,7 @@ public class GlideLoadUtils implements GlideLoadInterface {
                             .into(imageView);
                 }
             } else {
-                KLog.i("Picture loading failed,context is null");
+                ZLog.i("Picture loading failed,context is null");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,7 +101,7 @@ public class GlideLoadUtils implements GlideLoadInterface {
                             .into(imageView);
                 }
             } else {
-                KLog.i("Picture loading failed,context is null");
+                ZLog.i("Picture loading failed,context is null");
             }
         } catch (Exception e) {
 

@@ -1,0 +1,83 @@
+apply plugin: 'com.android.library'
+android {
+    compileSdkVersion 30
+    buildToolsVersion "29.0.3"
+    dataBinding {
+        enabled true
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    //rxjava
+    api rootProject.ext.dependencies.rxjava
+    api rootProject.ext.dependencies.rxandroid
+    //rx管理View的生命周期
+    api(rootProject.ext.dependencies.rxlifecycle) {
+        exclude group: 'com.android.support'
+    }
+    api(rootProject.ext.dependencies["rxlifecycle-components"]) {
+        exclude group: 'com.android.support'
+    }
+    //rxbinding
+    api(rootProject.ext.dependencies.rxbinding) {
+        exclude group: 'com.android.support'
+    }
+    //rx权限请求
+    api(rootProject.ext.dependencies.rxpermissions) {
+        exclude group: 'com.android.support'
+    }
+    //network
+    api rootProject.ext.dependencies.okhttp
+    //json解析
+    api rootProject.ext.dependencies.gson
+    //recyclerview的databinding套装
+    api(rootProject.ext.dependencies.bindingcollectionadapter) {
+        exclude group: 'com.android.support'
+    }
+    api(rootProject.ext.dependencies["bindingcollectionadapter-recyclerview"]) {
+        exclude group: 'com.android.support'
+    }
+    //Google LiveData和ViewModel组件
+    api rootProject.ext.dependencies["lifecycle-extensions"]
+    annotationProcessor rootProject.ext.dependencies["lifecycle-compiler"]
+    //图片选择器
+    api rootProject.ext.dependencies.PictureSelector
+    //popupwindow
+    api rootProject.ext.dependencies.BasePopup
+    //design
+    api rootProject.ext.dependencies.design
+    //material-dialogs
+    api(rootProject.ext.dependencies["material-dialogs-core"]) {
+        exclude group: 'com.android.support'
+    }
+    api(rootProject.ext.dependencies["material-dialogs-commons"]) {
+        exclude group: 'com.android.support'
+    }
+    //bugly
+    api rootProject.ext.dependencies.crashreportUpgrade
+    api rootProject.ext.dependencies.tinkerAndroid
+    api rootProject.ext.dependencies.nativecrashreport
+    //multidex分包
+    api rootProject.ext.dependencies.multidex
+    //数据库框架
+    api rootProject.ext.dependencies.LitePal
+
+    //glide
+    api rootProject.ext.dependencies.glide
+
+    //添加kotlin标准库依赖。
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.retrofit2:converter-gson:2.9.0'
+    api 'androidx.appcompat:appcompat:1.2.0'
+    api "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+    api "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0"
+    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
+    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+}
