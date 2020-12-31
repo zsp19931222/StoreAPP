@@ -21,16 +21,9 @@ import me.andy.mvvmhabit.util.ZLog
 open class BaseViewModelKotlin(application: Application) : BaseViewModel<BaseModel>(application) {
     val httpUtil by lazy { HttpUtil.getInstance() }
 
-    private var isShowLoading = MutableLiveData<Boolean>()//是否显示loading
     private var errorData = MutableLiveData<ErrorResult>()//错误信息
 
-    private fun showLoading() {
-        isShowLoading.value = true
-    }
 
-    private fun dismissLoading() {
-        isShowLoading.value = false
-    }
 
     private fun showError(error: ErrorResult) {
         errorData.value = error
@@ -53,10 +46,8 @@ open class BaseViewModelKotlin(application: Application) : BaseViewModel<BaseMod
         liveData: MutableLiveData<T>,
         isShowLoading: Boolean = false
     ) {
-        if (isShowLoading) showLoading()
         viewModelScope.launch {
             kotlin.runCatching {
-                delay(6000)
                 withContext(Dispatchers.IO) {//异步请求接口
                     val result = api()
                     withContext(Dispatchers.Main) {
@@ -69,7 +60,6 @@ open class BaseViewModelKotlin(application: Application) : BaseViewModel<BaseMod
                     }
                 }
             }.onSuccess {//请求成功并结束
-                dismissLoading()
             }.onFailure() {//接口请求失败
                 if (it is CancellationException) {
                     ZLog.d(it)

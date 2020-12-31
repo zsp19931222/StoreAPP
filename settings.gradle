@@ -1,3 +1,4 @@
+include ':library_jpush'
 include ':library_res'
 include ':library_base'
 include ':mvvmhabit'

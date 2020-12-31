@@ -269,8 +269,6 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
      * @return
      */
     public <T extends ViewModel> T createViewModel(Fragment fragment, Class<T> cls) {
-        ZLog.d("fragment-->"+fragment);
-        ZLog.d("cls-->"+cls);
         return ViewModelProviders.of(fragment).get(cls);
     }
 }

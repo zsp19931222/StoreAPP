@@ -8,6 +8,8 @@ import com.luck.picture.lib.tools.ToastUtils
 import com.zsp.storeapp.BR
 import com.zsp.storeapp.R
 import com.zsp.storeapp.databinding.ActivityTestBinding
+import com.zsp.storeapp.push.ISetAlias
+import com.zsp.storeapp.push.SetAliasUtil
 import com.zsp.storeapp.vm.TestViewModel
 import io.reactivex.Observer
 import me.andy.mvvmhabit.base.BaseActivity
@@ -29,12 +31,17 @@ class TestActivity : BaseActivity<ActivityTestBinding, TestViewModel>() {
     }
 
     override fun initData() {
+        val set: ISetAlias = SetAliasUtil(this)
+        set.setAlias("45145")
         viewModel.getBanner()
         viewModel.bannerData.observe(this) {
-            ZLog.d("bannerData-------->",it)
+            ZLog.d("bannerData-------->", it)
         }
         viewModel.raidersData.observe(this) {
-            ZLog.d("raidersData-------->",it)
+            ZLog.d("raidersData-------->", it)
+        }
+        viewModel.sportsList.observe(this){
+            ZLog.d("sportsList-------->", it)
         }
     }
 }

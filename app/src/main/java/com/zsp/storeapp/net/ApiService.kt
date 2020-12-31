@@ -4,6 +4,7 @@ import com.zsp.storeapp.base.BaseEntity
 import com.zsp.storeapp.base.ListResultEntity
 import com.zsp.storeapp.entity.BannerResult
 import com.zsp.storeapp.entity.RaidersEntity
+import com.zsp.storeapp.entity.SportsNewsEntity
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -18,5 +19,15 @@ interface ApiService {
     suspend fun getBannerList(): BaseEntity<ListResultEntity<BannerResult>>
 
     @GET("raider/getRaiderList/{pageSize}/{pageNum}")
-    suspend fun getRaiderList(@Path(value = "pageSize") pageSize:Int , @Path(value = "pageNum") pageNum:Int ): BaseEntity<ListResultEntity<RaidersEntity>>
+    suspend fun getRaiderList(
+        @Path(value = "pageSize") pageSize: Int,
+        @Path(value = "pageNum") pageNum: Int
+    ): BaseEntity<ListResultEntity<RaidersEntity>>
+
+    @GET("/sport/getNewsList/{state}/{pageSize}/{pageNum}")
+    suspend fun getNewsList(
+        @Path(value = "state") state: Int,
+        @Path(value = "pageSize") pageSize: Int,
+        @Path(value = "pageNum") pageNum: Int
+    ): BaseEntity<ListResultEntity<SportsNewsEntity>>
 }

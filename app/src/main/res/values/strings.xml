@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">我的小店</string>
+    <string name="app_name">我的体育资讯</string>
     <!--iconfont字体图标-->
     <string name="ic_return">&#xe9c9;</string> <!--返回-->
     <string name="ic_forward">&#xe665;</string> <!--前进-->
