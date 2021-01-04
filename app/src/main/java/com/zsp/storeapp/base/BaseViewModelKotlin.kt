@@ -11,6 +11,7 @@ import kotlinx.coroutines.*
 import me.andy.mvvmhabit.base.BaseApplication
 import me.andy.mvvmhabit.base.BaseModel
 import me.andy.mvvmhabit.base.BaseViewModel
+import me.andy.mvvmhabit.bus.RxBus
 import me.andy.mvvmhabit.util.ZLog
 
 /**
@@ -55,6 +56,7 @@ open class BaseViewModelKotlin(application: Application) : BaseViewModel<BaseMod
                             liveData.value = result.result
                         } else {
                             error(ErrorResult(result.code, result.message))
+                            RxBus.getDefault().post("请求失败")
                             ToastUtils.s(BaseApplication.getContext(), result.message)
                         }
                     }
@@ -64,6 +66,7 @@ open class BaseViewModelKotlin(application: Application) : BaseViewModel<BaseMod
                 if (it is CancellationException) {
                     ZLog.d(it)
                 } else {
+                    RxBus.getDefault().post("请求失败")
                     ConnectionUtil.handleException(e = it)
                 }
             }

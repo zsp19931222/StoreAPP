@@ -1,11 +1,17 @@
 package com.zsp.storeapp.activity
 
+import android.content.Intent
+import android.net.http.SslError
 import android.os.Bundle
+import android.webkit.SslErrorHandler
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.zsp.storeapp.BR
 import com.zsp.storeapp.R
 import com.zsp.storeapp.databinding.ActivityWebBinding
 import com.zsp.storeapp.vm.WebViewModel
 import me.andy.mvvmhabit.base.BaseActivity
+
 
 /**
  * description:
@@ -23,5 +29,19 @@ class WebActivity : BaseActivity<ActivityWebBinding, WebViewModel>() {
 
     override fun initData() {
         binding.wb.loadUrl(intent.extras?.getString("href").toString())
+        binding.wb.webViewClient = object : WebViewClient() {
+            override fun onReceivedSslError(
+                view: WebView,
+                handler: SslErrorHandler,
+                error: SslError
+            ) {
+                handler.proceed() // 接受所有网站的证书
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        binding.wb.loadUrl(intent?.extras?.getString("href").toString())
     }
 }

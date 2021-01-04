@@ -1,6 +1,7 @@
 package com.zsp.storeapp.fragment
 
 //import com.zsp.storeapp.adapter.SportsNewsAdapter
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,11 +12,10 @@ import com.zsp.storeapp.R
 import com.zsp.storeapp.adapter.SportsNewsAdapter
 import com.zsp.storeapp.databinding.FragMainBinding
 import com.zsp.storeapp.entity.SportsNewsEntity
-import com.zsp.storeapp.util.IsNullUtil
 import com.zsp.storeapp.vm.FragMainViewModel
 import me.andy.mvvmhabit.base.BaseFragment
+import me.andy.mvvmhabit.bus.RxBus
 import me.andy.mvvmhabit.util.ZLog
-import java.util.*
 
 /**
  * description:
@@ -41,6 +41,7 @@ class FragMain(var state: Int) : BaseFragment<FragMainBinding, FragMainViewModel
         return BR.viewModel
     }
 
+    @SuppressLint("CheckResult")
     override fun initData() {
         ZLog.d(this)
         viewModel.state.value = this.state
@@ -48,6 +49,11 @@ class FragMain(var state: Int) : BaseFragment<FragMainBinding, FragMainViewModel
         viewModel.pageSize.value = pageSize
         binding.rv.layoutManager = LinearLayoutManager(activity)
         binding.rv.adapter = adapter
+        RxBus.getDefault().toObservable(String::class.java).subscribe {
+            binding.srl.finishRefresh()
+            binding.srl.finishLoadMore()
+        }
+
         viewModel.sportsList.observe(this) {
             list.addAll(it)
             adapter.notifyDataSetChanged()
@@ -64,7 +70,7 @@ class FragMain(var state: Int) : BaseFragment<FragMainBinding, FragMainViewModel
             viewModel.pageNum.value = 1
         }
         binding.srl.setOnLoadMoreListener {
-            ZLog.d("setOnLoadMoreListener",viewModel.pageNum.value?.inc())
+            ZLog.d("setOnLoadMoreListener", viewModel.pageNum.value?.inc())
             viewModel.pageNum.value = viewModel.pageNum.value?.inc()
         }
     }

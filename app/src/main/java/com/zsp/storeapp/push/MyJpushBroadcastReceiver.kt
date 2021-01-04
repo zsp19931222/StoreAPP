@@ -6,6 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import cn.jpush.android.api.JPushInterface
+import com.google.gson.JsonObject
+import com.zsp.storeapp.activity.WebActivity
+import com.zsp.storeapp.util.IsNullUtil
 import me.andy.mvvmhabit.util.ZLog
 import org.json.JSONException
 import org.json.JSONObject
@@ -16,7 +19,7 @@ import org.json.JSONObject
  * email:zsp872126510@gmail.com
  */
 class MyJpushBroadcastReceiver : BroadcastReceiver() {
-    private var ticket = ""
+    private var href = ""
     override fun onReceive(context: Context, intent: Intent) {
         try {
             val bundle = intent.extras
@@ -37,6 +40,13 @@ class MyJpushBroadcastReceiver : BroadcastReceiver() {
                 ZLog.d("[MyReceiver] 接收到推送下来的通知的ID: $notifactionId")
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED == intent.action) {
                 ZLog.d("[MyReceiver] 用户点击打开了通知")
+                if (!IsNullUtil.getInstance().isEmpty(href)) {
+                    val intent = Intent(context, WebActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    intent.putExtra("href", href)
+                    ZLog.d(href)
+                    context.startActivity(intent)
+                }
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK == intent.action) {
                 ZLog.d("[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle!!.getString(JPushInterface.EXTRA_EXTRA))
                 //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
@@ -49,6 +59,7 @@ class MyJpushBroadcastReceiver : BroadcastReceiver() {
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            ZLog.e(e.toString())
         }
     }
 
@@ -70,8 +81,8 @@ class MyJpushBroadcastReceiver : BroadcastReceiver() {
                     val it = json.keys()
                     while (it.hasNext()) {
                         val myKey = it.next()
-                        if ("ticket" == myKey) {
-                            ticket = json.optString(myKey)
+                        if ("href" == myKey) {
+                            href = json.optString(myKey)
                         }
                         sb.append("\nkey:").append(key).append(", value: [").append(myKey)
                             .append(" - ").append(json.optString(myKey)).append("]")

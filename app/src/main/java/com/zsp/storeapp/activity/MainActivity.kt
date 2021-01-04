@@ -27,7 +27,7 @@ import me.andy.mvvmhabit.base.BaseActivity
  * email:zsp872126510@gmail.com
  */
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
-    val tabs = arrayOf("国际足球", "国内足球", "NBA","CBA", "综合体育", "最新新闻")
+    val tabs = arrayOf("国际足球", "国内足球", "NBA","CBA", "综合体育", "最新新闻","虎扑足球")
     private var mediator: TabLayoutMediator? = null
     private var activeColor = Color.parseColor("#ff678f")
     private var normalColor = Color.parseColor("#666666")
