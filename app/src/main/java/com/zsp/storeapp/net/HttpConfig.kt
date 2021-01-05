@@ -7,6 +7,6 @@ package com.zsp.storeapp.net
  */
 object HttpConfig {
 
-    const val BASE_URL = "http://141.164.49.212/tourism/"
+    const val BASE_URL = "http://141.164.49.212:8083/"
 
 }
