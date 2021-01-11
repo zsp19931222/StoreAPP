@@ -28,6 +28,8 @@ class Test {
     private Job job;
     List<SportsNewsEntity> list=new ArrayList<>();
     void text(){
+        for (int i = 0; i < 10; i++) {
 
+        }
     }
 }

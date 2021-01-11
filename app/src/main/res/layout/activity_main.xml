@@ -1,54 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout>
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.zsp.storeapp.vm.MainViewModel" />
+            type="com.zsp.storeapp.base.BaseViewModelKotlin" />
     </data>
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
 
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            app:tabGravity="center"
-            app:tabIndicatorColor="#ff678f"
-            app:tabIndicatorFullWidth="false"
-            app:tabIndicatorHeight="2dp"
-            app:tabMode="scrollable"
-            app:tabSelectedTextColor="#ff678f"
-            app:tabTextColor="#333333"
-            app:tabUnboundedRipple="true" />
-
-        <!--
-            tabIndicatorColor  指示器颜色
-            tabIndicatorHeight 指示器高度
-            tabIndicatorFullWidth  设置为false 则指示器跟文本宽度一致
-            tabUnboundedRipple 设置为true点击时会有一个水波纹效果
-            tabGravity 可设置center或fill；center指的是居中显示，fill指的是沾满全屏。
-            tabMode 可设置fixed和 scrollable；fixed：指的是固定tab；scrollable指的是tab可滑动。
-            tabTextColor tab文字颜色
-            tabSelectedTextColor 选中时的tab颜色
-
-        -->
-
-        <!-- ViewPager2内部通过RecyclerView
-             所以需要通过orientation来设置页面切换方向-->
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager"
+        <FrameLayout
+            android:id="@+id/fl"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal" />
+            android:layout_weight="1" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/news"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="新闻"
+                android:textColor="@color/color_dark_333333"
+                android:textSize="@dimen/font14" />
+
+            <Button
+                android:id="@+id/video"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="视频"
+                android:textColor="@color/color_dark_333333"
+                android:textSize="@dimen/font14" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

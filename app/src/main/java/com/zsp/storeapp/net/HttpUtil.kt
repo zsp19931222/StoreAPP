@@ -18,6 +18,9 @@ class HttpUtil {
     suspend fun getRaiderList(pageSize: Int, pageNum: Int) =
         mService.getRaiderList(pageSize, pageNum)
 
+    suspend fun getVideoList(pageSize: Int, pageNum: Int) =
+        mService.getVideoList(pageSize, pageNum)
+
     suspend fun getNewsList(state: Int, pageSize: Int, pageNum: Int) =
         mService.getNewsList(state, pageSize, pageNum)
 

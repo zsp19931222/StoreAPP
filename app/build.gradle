@@ -48,4 +48,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     //直接引入material UI
     implementation "com.google.android.material:material:1.1.0"
+    //视频播放完整版引入
+    implementation 'com.shuyu:GSYVideoPlayer:8.0.0'
 }
