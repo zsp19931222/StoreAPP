@@ -5,6 +5,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+
     <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
         android:id="@+id/detail_player"
         android:layout_width="match_parent"

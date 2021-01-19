@@ -1,14 +1,21 @@
 package com.zsp.storeapp.fragment
 
 import android.annotation.SuppressLint
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.VideoView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.zsp.storeapp.BR
@@ -16,6 +23,8 @@ import com.zsp.storeapp.R
 import com.zsp.storeapp.adapter.VideoAdapter
 import com.zsp.storeapp.databinding.ActivityVideoBinding
 import com.zsp.storeapp.entity.SportsVideoEntity
+import com.zsp.storeapp.viewpager.OnViewPagerListener
+import com.zsp.storeapp.viewpager.ViewPagerLayoutManager
 import com.zsp.storeapp.vm.VideoViewModel
 import me.andy.mvvmhabit.base.BaseFragment
 import me.andy.mvvmhabit.bus.RxBus
@@ -32,6 +41,7 @@ class VideoFragment : BaseFragment<ActivityVideoBinding, VideoViewModel>() {
     var pageSize = 20
     var pageNum = 1
     var adapter = VideoAdapter(R.layout.item_video, list)
+    private var mLayoutManager: ViewPagerLayoutManager? = null
 
     override fun initContentView(
         inflater: LayoutInflater?,
@@ -79,7 +89,8 @@ class VideoFragment : BaseFragment<ActivityVideoBinding, VideoViewModel>() {
                             }
                             //如果滑出去了上面和下面就是否，和今日头条一样
                             GSYVideoManager.releaseAllVideos()
-                            adapter.notifyDataSetChanged()
+                            //防止出现Cannot call this method in a scroll callback
+                            binding.rv.post { adapter.notifyDataSetChanged() }
                         }
                     }
                 }
@@ -88,8 +99,10 @@ class VideoFragment : BaseFragment<ActivityVideoBinding, VideoViewModel>() {
 
         viewModel.pageNum.value = pageNum
         viewModel.pageSize.value = pageSize
-        binding.rv.layoutManager = LinearLayoutManager(context)
+//        mLayoutManager = ViewPagerLayoutManager(activity, OrientationHelper.VERTICAL)
+        binding.rv.layoutManager = LinearLayoutManager(activity)
         binding.rv.adapter = adapter
+//        initListener()
         RxBus.getDefault().toObservable(String::class.java).subscribe {
             binding.srl.finishRefresh()
             binding.srl.finishLoadMore()
@@ -115,6 +128,82 @@ class VideoFragment : BaseFragment<ActivityVideoBinding, VideoViewModel>() {
         }
     }
 
+    private fun initListener() {
+        mLayoutManager!!.setOnViewPagerListener(object : OnViewPagerListener {
+            override fun onInitComplete() {
+                ZLog.e(
+                    "onInitComplete"
+                )
+                playVideo(0)
+            }
+
+            override fun onPageRelease(isNext: Boolean, position: Int) {
+                ZLog.e(
+                    "释放位置:$position 下一页:$isNext"
+                )
+                var index = 0
+                index = if (isNext) {
+                    0
+                } else {
+                    1
+                }
+                releaseVideo(index)
+            }
+
+            override fun onPageSelected(position: Int, isBottom: Boolean) {
+                ZLog.e(
+                    "选中位置:$position  是否是滑动到底部:$isBottom"
+                )
+                playVideo(position)
+            }
+        })
+    }
+
+    private fun playVideo(position: Int) {
+        val itemView: View = binding.rv.getChildAt(0)
+        val videoView = itemView.findViewById<VideoView>(R.id.video_view)
+        val imgPlay =
+            itemView.findViewById<ImageView>(R.id.img_play)
+        val imgThumb =
+            itemView.findViewById<ImageView>(R.id.img_thumb)
+        val rootView = itemView.findViewById<RelativeLayout>(R.id.root_view)
+        val mediaPlayer = arrayOfNulls<MediaPlayer>(1)
+        videoView.start()
+        videoView.setOnInfoListener { mp, what, extra ->
+            mediaPlayer[0] = mp
+            mp.isLooping = true
+            imgThumb.animate().alpha(0f).setDuration(200).start()
+            false
+        }
+        videoView.setOnPreparedListener { }
+        imgPlay.setOnClickListener(object : View.OnClickListener {
+            var isPlaying = true
+            override fun onClick(v: View) {
+                isPlaying = if (videoView.isPlaying) {
+                    imgPlay.animate().alpha(1f).start()
+                    videoView.pause()
+                    false
+                } else {
+                    imgPlay.animate().alpha(0f).start()
+                    videoView.start()
+                    true
+                }
+            }
+        })
+    }
+
+
+    private fun releaseVideo(index: Int) {
+        val itemView: View = binding.rv.getChildAt(index)
+        val videoView = itemView.findViewById<VideoView>(R.id.video_view)
+        val imgThumb =
+            itemView.findViewById<ImageView>(R.id.img_thumb)
+        val imgPlay =
+            itemView.findViewById<ImageView>(R.id.img_play)
+        videoView.stopPlayback()
+        imgThumb.animate().alpha(1f).start()
+        imgPlay.animate().alpha(0f).start()
+    }
 
     override fun onPause() {
         super.onPause()

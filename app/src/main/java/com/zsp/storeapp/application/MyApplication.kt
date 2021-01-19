@@ -4,7 +4,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.zsp.storeapp.R
-import com.zsp.storeapp.activity.NewsActivity
+import com.zsp.storeapp.activity.MainActivity
 import com.zsp.storeapp.push.ISetAlias
 import com.zsp.storeapp.push.SetAliasUtil
 import io.reactivex.plugins.RxJavaPlugins
@@ -36,7 +36,7 @@ class MyApplication : BaseApplication() {
             .trackActivities(true) //是否跟踪Activity
             .minTimeBetweenCrashesMs(2000) //崩溃的间隔时间(毫秒)
             .errorDrawable(R.mipmap.ic_launcher) //错误图标
-            .restartActivity(NewsActivity::class.java) //重新启动后的activity
+            .restartActivity(MainActivity::class.java) //重新启动后的activity
             //.errorActivity(YourCustomErrorActivity.class) //崩溃后的错误activity
             //.eventListener(new YourCustomEventListener()) //崩溃后的错误监听
             .apply()
