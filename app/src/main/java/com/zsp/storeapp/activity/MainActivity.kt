@@ -1,7 +1,8 @@
 package com.zsp.storeapp.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.widget.RadioGroup
+import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.shuyu.gsyvideoplayer.GSYVideoManager
@@ -13,7 +14,11 @@ import com.zsp.storeapp.fragment.NewsFragment
 import com.zsp.storeapp.fragment.VideoFragment
 import com.zsp.storeapp.push.ISetAlias
 import com.zsp.storeapp.push.SetAliasUtil
+import com.zsp.storeapp.util.OnDoubleClickListener
+import com.zsp.storeapp.util.OnDoubleClickListener.DoubleClickCallback
 import me.andy.mvvmhabit.base.BaseActivity
+import me.andy.mvvmhabit.base.BaseApplication
+import me.andy.mvvmhabit.bus.RxBus
 import me.andy.mvvmhabit.util.ZLog
 
 /**
@@ -34,6 +39,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseViewModelKotlin>() {
         return BR.viewModel
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initData() {
         val set: ISetAlias = SetAliasUtil(this)
         set.setAlias("45145")
@@ -41,7 +47,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseViewModelKotlin>() {
         initNews()
         binding.news.setOnClickListener { initNews() }
         binding.video.setOnClickListener { initVideo() }
-
+        binding.video.setOnTouchListener(OnDoubleClickListener(object : DoubleClickCallback {
+            override fun onDoubleClick() {
+                RxBus.getDefault().post("video返回顶部")
+            }
+        }))
+        binding.news.setOnTouchListener(OnDoubleClickListener(object : DoubleClickCallback {
+            override fun onDoubleClick() {
+                RxBus.getDefault().post("news返回顶部")
+            }
+        }))
     }
 
     override fun onBackPressed() {

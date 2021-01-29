@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.zsp.storeapp.BR
 import com.zsp.storeapp.R
 import com.zsp.storeapp.adapter.SportsNewsAdapter
 import com.zsp.storeapp.databinding.FragMainBinding
 import com.zsp.storeapp.entity.SportsNewsEntity
+import com.zsp.storeapp.util.StateUtil
 import com.zsp.storeapp.vm.FragMainViewModel
 import me.andy.mvvmhabit.base.BaseFragment
 import me.andy.mvvmhabit.bus.RxBus
@@ -54,6 +56,13 @@ class FragMain(var state: Int) : BaseFragment<FragMainBinding, FragMainViewModel
             binding.srl.finishLoadMore()
         }
 
+        RxBus.getDefault().toObservable(StateUtil::class.java).subscribe {
+            ZLog.d(it.position)
+            if (this.state == it.position) {
+                smoothMoveToPosition(binding.rv, 0)
+            }
+        }
+
         viewModel.sportsList.observe(this) {
             list.addAll(it)
             adapter.notifyDataSetChanged()
@@ -72,6 +81,40 @@ class FragMain(var state: Int) : BaseFragment<FragMainBinding, FragMainViewModel
         binding.srl.setOnLoadMoreListener {
             ZLog.d("setOnLoadMoreListener", viewModel.pageNum.value?.inc())
             viewModel.pageNum.value = viewModel.pageNum.value?.inc()
+        }
+    }
+
+    //目标项是否在最后一个可见项之后
+    private var mShouldScroll = false
+
+    //记录目标项位置
+    private var mToPosition = 0
+
+    //目标项是否在最后一个可见项之后 private boolean mShouldScroll; //记录目标项位置 private int mToPosition;
+    //滑动到指定位置
+    private fun smoothMoveToPosition(
+        mRecyclerView: RecyclerView,
+        position: Int
+    ) { // 第一个可见位置
+        val firstItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(0))
+        // 最后一个可见位置
+        val lastItem =
+            mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(mRecyclerView.childCount - 1))
+        if (position < firstItem) {
+            // 第一种可能:跳转位置在第一个可见位置之前
+            mRecyclerView.smoothScrollToPosition(position)
+        } else if (position <= lastItem) {
+            // 第二种可能:跳转位置在第一个可见位置之后
+            val movePosition = position - firstItem
+            if (movePosition >= 0 && movePosition < mRecyclerView.childCount) {
+                val top = mRecyclerView.getChildAt(movePosition).top
+                mRecyclerView.smoothScrollBy(0, top)
+            }
+        } else {
+            // 第三种可能:跳转位置在最后可见项之后
+            mRecyclerView.smoothScrollToPosition(position)
+            mToPosition = position
+            mShouldScroll = true
         }
     }
 }

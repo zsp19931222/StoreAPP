@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,6 @@ import android.widget.VideoView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.zsp.storeapp.BR
@@ -104,8 +101,13 @@ class VideoFragment : BaseFragment<ActivityVideoBinding, VideoViewModel>() {
         binding.rv.adapter = adapter
 //        initListener()
         RxBus.getDefault().toObservable(String::class.java).subscribe {
-            binding.srl.finishRefresh()
-            binding.srl.finishLoadMore()
+            if ("video返回顶部" == it){
+                smoothMoveToPosition(binding.rv,0)
+            }else{
+                binding.srl.finishRefresh()
+                binding.srl.finishLoadMore()
+            }
+
         }
 
         viewModel.videoList.observe(this) {
@@ -126,8 +128,42 @@ class VideoFragment : BaseFragment<ActivityVideoBinding, VideoViewModel>() {
         binding.srl.setOnLoadMoreListener {
             viewModel.pageNum.value = viewModel.pageNum.value?.inc()
         }
+
     }
 
+    //目标项是否在最后一个可见项之后
+    private var mShouldScroll = false
+
+    //记录目标项位置
+    private var mToPosition = 0
+
+    //目标项是否在最后一个可见项之后 private boolean mShouldScroll; //记录目标项位置 private int mToPosition;
+    //滑动到指定位置
+    private fun smoothMoveToPosition(
+        mRecyclerView: RecyclerView,
+        position: Int
+    ) { // 第一个可见位置
+        val firstItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(0))
+        // 最后一个可见位置
+        val lastItem =
+            mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(mRecyclerView.childCount - 1))
+        if (position < firstItem) {
+            // 第一种可能:跳转位置在第一个可见位置之前
+            mRecyclerView.smoothScrollToPosition(position)
+        } else if (position <= lastItem) {
+            // 第二种可能:跳转位置在第一个可见位置之后
+            val movePosition = position - firstItem
+            if (movePosition >= 0 && movePosition < mRecyclerView.childCount) {
+                val top = mRecyclerView.getChildAt(movePosition).top
+                mRecyclerView.smoothScrollBy(0, top)
+            }
+        } else {
+            // 第三种可能:跳转位置在最后可见项之后
+            mRecyclerView.smoothScrollToPosition(position)
+            mToPosition = position
+            mShouldScroll = true
+        }
+    }
     private fun initListener() {
         mLayoutManager!!.setOnViewPagerListener(object : OnViewPagerListener {
             override fun onInitComplete() {

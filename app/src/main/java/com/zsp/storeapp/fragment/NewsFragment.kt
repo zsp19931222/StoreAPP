@@ -1,5 +1,6 @@
 package com.zsp.storeapp.fragment
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
@@ -18,8 +19,11 @@ import com.zsp.storeapp.R
 import com.zsp.storeapp.databinding.ActivityNewsBinding
 import com.zsp.storeapp.push.ISetAlias
 import com.zsp.storeapp.push.SetAliasUtil
+import com.zsp.storeapp.util.StateUtil
 import com.zsp.storeapp.vm.NewsViewModel
 import me.andy.mvvmhabit.base.BaseFragment
+import me.andy.mvvmhabit.bus.RxBus
+import me.andy.mvvmhabit.util.ZLog
 
 /**
  * description:
@@ -27,10 +31,11 @@ import me.andy.mvvmhabit.base.BaseFragment
  * email:zsp872126510@gmail.com
  */
 class NewsFragment : BaseFragment<ActivityNewsBinding, NewsViewModel>() {
-    val tabs = arrayOf("国际足球", "国内足球", "NBA","CBA", "综合体育", "最新新闻","虎扑足球")
+    val tabs = arrayOf("国际足球", "国内足球", "NBA", "CBA", "综合体育", "最新新闻", "虎扑足球")
     private var mediator: TabLayoutMediator? = null
     private var activeColor = Color.parseColor("#ff678f")
     private var normalColor = Color.parseColor("#666666")
+    var index: Int = 0
 
     private var activeSize = 20
     private var normalSize = 20
@@ -46,6 +51,7 @@ class NewsFragment : BaseFragment<ActivityNewsBinding, NewsViewModel>() {
         return BR.viewModel
     }
 
+    @SuppressLint("CheckResult")
     override fun initData() {
         //预加载
         binding.viewPager.offscreenPageLimit = 3
@@ -86,6 +92,12 @@ class NewsFragment : BaseFragment<ActivityNewsBinding, NewsViewModel>() {
 
         //viewPager 页面切换监听
         binding.viewPager.registerOnPageChangeCallback(changeCallback)
+
+        RxBus.getDefault().toObservable(String::class.java).subscribe {
+            if ("news返回顶部" == it)
+                ZLog.d(index)
+                RxBus.getDefault().post(StateUtil(index))
+        }
     }
 
     override fun onDestroy() {
@@ -96,6 +108,7 @@ class NewsFragment : BaseFragment<ActivityNewsBinding, NewsViewModel>() {
 
     private var changeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
+            index = position
             //可以来设置选中时tab的大小
             val tabCount = binding.tabLayout.tabCount
             for (i in 0 until tabCount) {

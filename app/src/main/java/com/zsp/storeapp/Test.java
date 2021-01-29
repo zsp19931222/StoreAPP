@@ -1,6 +1,7 @@
 package com.zsp.storeapp;
 
 import android.content.Context;
+import android.view.View;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
@@ -11,11 +12,13 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.zsp.storeapp.entity.SportsNewsEntity;
+import com.zsp.storeapp.util.OnDoubleClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import kotlinx.coroutines.Job;
+import me.andy.mvvmhabit.base.BaseApplication;
 import me.andy.mvvmhabit.bus.RxBus;
 import me.andy.mvvmhabit.util.ZLog;
 
